@@ -27,12 +27,6 @@ for i = (rndi(1)+2):size(NewChrom, 2)
         NewChrom(i) = OldChrom(i-1);
     end
 end
-%buffer=NewChrom(rndi(2));
-%NewChrom(rndi(1))=NewChrom(rndi(2));
-%NewChrom(rndi(2))=buffer;
-%OldChrom(rndi(2)) = []; 
-%NewChrom = [OldChrom(1:rndi(1)) buffer OldChrom(rndi(1)+1:end)]; 
-
 if Representation==1
 	NewChrom=path2adj(NewChrom);
 end
