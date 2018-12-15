@@ -75,8 +75,9 @@ xlabel('Distance');
 ylabel('Number');
 
 %sets of operators from wich one can choose in the boxes
-crossoverset={'xalt_edges', 'order'};
+crossoverset={'xalt_edges', 'order_high_level'};
 mutationset={'inversion', 'insert', 'scramble'};
+
 ph = uipanel('Parent',fh,'Title','Settings','Position',[.55 .1 .5 .45]);
 datasetpopuptxt = uicontrol(ph,'Style','text','String','Dataset','Position',[0 260 130 20]);
 datasetpopup = uicontrol(ph,'Style','popupmenu','String',datasets,'Value',1,'Position',[130 260 130 20],'Callback',@datasetpopup_Callback);
