@@ -6,16 +6,20 @@
 % Tim.Volodine@cs.kuleuven.ac.be
 % Tim.Pillards@cs.kuleuven.ac.be
 %
+% Altered to be used in path representation
 
 function Offspring=cross_alternate_edges(Parents);
 	cols=size(Parents,2);
+    adj_parents=zeros(2, cols);
+    adj_parents(1,:) = path2adj(Parents(1,:));
+    adj_parents(2,:) = path2adj(Parents(2,:));
 	Offspring=zeros(1,cols);
-    [sx,InverseParents1]=sort(Parents(1,:));
-    [sx,InverseParents2]=sort(Parents(2,:));
+    [sx,InverseParents1]=sort(adj_parents(1,:));
+    [sx,InverseParents2]=sort(adj_parents(2,:));
     InverseParents=[InverseParents1;InverseParents2];
     % InverseParents is the same tour but in reversed direction
     % to easily find both edges in a city
-    AllParents=[Parents;InverseParents];
+    AllParents=[adj_parents;InverseParents];
     % AllParents contains both directed edges for every city
     % the last two rows contain the inversed tours
 	
@@ -63,4 +67,5 @@ function Offspring=cross_alternate_edges(Parents);
 		parentNr=3-parentNr;  % switch the parents (1->2 or 2->1)
 	end
 	Offspring(walking_index)=start_index;
+    Offspring = adj2path(Offspring);
 % end function
