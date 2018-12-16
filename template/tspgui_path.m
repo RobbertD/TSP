@@ -75,7 +75,7 @@ xlabel('Distance');
 ylabel('Number');
 
 %sets of operators from wich one can choose in the boxes
-crossoverset={'xalt_edges', 'order_high_level'};
+crossoverset={'xalt_edges', 'order_high_level', 'pmx'};
 mutationset={'inversion', 'insert', 'scramble'};
 
 ph = uipanel('Parent',fh,'Title','Settings','Position',[.55 .1 .5 .45]);
