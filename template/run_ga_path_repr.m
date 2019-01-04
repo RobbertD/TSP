@@ -65,7 +65,11 @@ function run_ga_path_repr(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR
         	%select individuals for breeding
         	SelCh=select('sus', Chrom, FitnV, GGAP);
         	%recombine individuals (crossover)
-            SelCh = recombin(CROSSOVER,SelCh,PR_CROSS);
+            if strcmp(CROSSOVER,'scx')
+                SelCh = scx(SelCh, PR_CROSS, Dist);
+            else
+                SelCh = recombin(CROSSOVER,SelCh,PR_CROSS);
+            end
             SelCh=mutateTSP(MUTATION,SelCh,PR_MUT);
             %evaluate offspring, call objective function
         	ObjVSel = tspfun(SelCh,Dist);
