@@ -1,4 +1,4 @@
-function [mean_fit, best_fit] = run_ga_test_fpropselect(parentSelectionMethod, NIND, MAXGEN, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, CROSSOVER, LOCALLOOP)
+function [mean_fits, best] = run_ga_test_survivorselect(survivorSelectionMethod, parentSelectionMethod, NIND, MAXGEN, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, CROSSOVER, LOCALLOOP)
 % usage: run_ga(
 %               NIND, MAXGEN, NVAR, 
 %               ELITIST, STOP_PERCENTAGE, 
@@ -34,8 +34,8 @@ function [mean_fit, best_fit] = run_ga_test_fpropselect(parentSelectionMethod, N
     NVAR=size(data,1);
         
         GGAP = 1 - ELITIST;
-        mean_fits=zeros(1,MAXGEN+1);
-        worst=zeros(1,MAXGEN+1);
+        mean_fits=zeros(1,MAXGEN);
+        worst=zeros(1,MAXGEN);
         Dist=zeros(NVAR,NVAR);
         diversity = zeros(MAXGEN+1);
         for i=1:size(x,1)
@@ -55,6 +55,7 @@ function [mean_fit, best_fit] = run_ga_test_fpropselect(parentSelectionMethod, N
         % evaluate initial population
         ObjV = tspfun(Chrom,Dist);
         best=zeros(1,MAXGEN);
+        sd=zeros(1,MAXGEN);
         % generational loop
         while gen<MAXGEN
             sObjV=sort(ObjV);
@@ -62,6 +63,7 @@ function [mean_fit, best_fit] = run_ga_test_fpropselect(parentSelectionMethod, N
         	minimum=best(gen+1);
             mean_fits(gen+1)=mean(ObjV);
             worst(gen+1)=max(ObjV);
+            sd(gen+1)=std(ObjV);
             if gen == 0, fit_begin = best(gen+1);  end
             for t=1:size(ObjV,1)
                 if (ObjV(t)==minimum)
@@ -75,9 +77,6 @@ function [mean_fit, best_fit] = run_ga_test_fpropselect(parentSelectionMethod, N
             
             %%added stop criterium
             if (stop_crit(gen, best, 10, 0.01))
-                disp("stop_crit")
-                stop_values = [stop_values;[gen, best(gen)]];
-                
                   %break;
             end 
             diversity(gen+1) = stop_crit_diversity(Chrom);
@@ -95,11 +94,27 @@ function [mean_fit, best_fit] = run_ga_test_fpropselect(parentSelectionMethod, N
             %evaluate offspring, call objective function
         	ObjVSel = tspfun(SelCh,Dist);
             %reinsert offspring into population
-        	[Chrom ObjV]=reins(Chrom,SelCh,1,1,ObjV,ObjVSel);
+            if strcmp(survivorSelectionMethod,'survivorRR'); Nselect = 2; 
+            elseif strcmp(survivorSelectionMethod,'uniform'); Nselect = 0; 
+            elseif strcmp(survivorSelectionMethod,'fitness-based'); Nselect = 1;
+            else; error('error: survivor selection method does not exist'); 
+            end
+        	[Chrom ObjV]=reins(Chrom,SelCh,1,Nselect,ObjV,ObjVSel);
             
             Chrom = tsp_ImprovePopulation(NIND, NVAR, Chrom,LOCALLOOP,Dist);
         	%increment generation counter
         	gen=gen+1;            
         end
-        fit_end = best(MAXGEN);
+        
+%         
+%     figure(1)
+%     plot(best, 'r')
+%     hold on
+%     x=1:MAXGEN
+%     errorbar(x,mean_fits, sd , 'b')
+%     hold on
+%     title(survivorSelectionMethod)
+%     xlabel('Generation'), ylabel('Fitness')
+%     ylim([5 55])
+        
 end

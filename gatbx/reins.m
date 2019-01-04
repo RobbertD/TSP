@@ -107,7 +107,7 @@ function [Chrom, ObjVCh] = reins(Chrom, SelCh, SUBPOP, InsOpt, ObjVCh, ObjVSel);
             [Dummy, ChIx] = sort(rand(NIND,1));
          else
              [Dummy, ChIx] = sort(-ObjVCh((irun-1)*NIND+1:irun*NIND));
-             Sel = survivorRR(Chrom, SelCh, ObjVCh, ObjVSel);
+             SelCh = survivorRR(Chrom, SelCh, ObjVCh, ObjVSel);
          end
          PopIx = ChIx((1:NIns)')+ (irun-1)*NIND;
       % Calculate position of Nins-% best offspring

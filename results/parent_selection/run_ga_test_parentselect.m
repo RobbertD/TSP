@@ -1,4 +1,4 @@
-function [mean_fits, best] = run_ga_test_fpropselect(parentSelectionMethod, NIND, MAXGEN, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, CROSSOVER, LOCALLOOP)
+function [mean_fits, best] = run_ga_test_parentselect(parentSelectionMethod, NIND, MAXGEN, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, CROSSOVER, LOCALLOOP)
 % usage: run_ga(
 %               NIND, MAXGEN, NVAR, 
 %               ELITIST, STOP_PERCENTAGE, 
@@ -35,7 +35,7 @@ function [mean_fits, best] = run_ga_test_fpropselect(parentSelectionMethod, NIND
         
         GGAP = 1 - ELITIST;
         mean_fits=zeros(1,MAXGEN);
-        worst=zeros(1,MAXGEN+1);
+        worst=zeros(1,MAXGEN);
         Dist=zeros(NVAR,NVAR);
         diversity = zeros(MAXGEN+1);
         for i=1:size(x,1)
@@ -55,6 +55,7 @@ function [mean_fits, best] = run_ga_test_fpropselect(parentSelectionMethod, NIND
         % evaluate initial population
         ObjV = tspfun(Chrom,Dist);
         best=zeros(1,MAXGEN);
+        sd=zeros(1,MAXGEN);
         % generational loop
         while gen<MAXGEN
             sObjV=sort(ObjV);
@@ -62,6 +63,7 @@ function [mean_fits, best] = run_ga_test_fpropselect(parentSelectionMethod, NIND
         	minimum=best(gen+1);
             mean_fits(gen+1)=mean(ObjV);
             worst(gen+1)=max(ObjV);
+            sd(gen+1)=std(ObjV);
             if gen == 0, fit_begin = best(gen+1);  end
             for t=1:size(ObjV,1)
                 if (ObjV(t)==minimum)
@@ -98,5 +100,14 @@ function [mean_fits, best] = run_ga_test_fpropselect(parentSelectionMethod, NIND
         	%increment generation counter
         	gen=gen+1;            
         end
+        
+    figure(1)
+    plot(best, 'r')
+    hold on
+    x=1:MAXGEN
+    errorbar(x,mean_fits, sd , 'b')
+    hold on
+    title('FPS')
+    xlabel('Generation'), ylabel('Fitness')
         
 end
