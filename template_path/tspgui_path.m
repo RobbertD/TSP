@@ -2,18 +2,18 @@ function tspgui_path()
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-NIND=50;		% Number of individuals
-MAXGEN=100;		% Maximum no. of generations
+NIND=393;		% Number of individuals
+MAXGEN=64;		% Maximum no. of generations
 NVAR=26;		% No. of variables
 PRECI=1;		% Precision of variables
 ELITIST=0.05;    % percentage of the elite population
 GGAP=1-ELITIST;		% Generation gap
 STOP_PERCENTAGE=.95;    % percentage of equal fitness individuals for stopping
 PR_CROSS=.95;     % probability of crossover
-PR_MUT=.05;       % probability of mutation
-LOCALLOOP=0;      % local loop removal
-TWO_OPT=0;
-CROSSOVER = 'xalt_edges';  % default crossover operator
+PR_MUT=.3;       % probability of mutation
+LOCALLOOP=1;      % local loop removal
+TWO_OPT=1;
+CROSSOVER = 'scx';  % default crossover operator
 MUTATION = 'inversion';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -54,8 +54,10 @@ for i=1:size(datasets,1);
 end
 
 % start with first dataset
-data = load(['datasets/' datasets{1}]);
-x=data(:,1)/max([data(:,1);data(:,2)]);y=data(:,2)/max([data(:,1);data(:,2)]);
+%data = load(['datasets/' datasets{1}]);
+data = load(['datasets/xql662.tsp']);
+%x=data(:,1)/max([data(:,1);data(:,2)]);y=data(:,2)/max([data(:,1);data(:,2)]);
+x=data(:,1);y=data(:,2);
 NVAR=size(data,1);
 
 datasets

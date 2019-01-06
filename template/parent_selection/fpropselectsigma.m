@@ -15,14 +15,16 @@
 %                The new population, ready for mating, can be obtained
 %                by calculating OldChrom(NewChrIx,:).
 
-% Author:     Hartmut Pohlheim (Carlos Fonseca)
-% History:    12.12.93     file created
-%             22.02.94     clean up, comments
-
-function NewChrIx = fpropselect(FitnV,Nsel);
+function NewChrIx = fpropselectsigma(FitnV,Nsel);
 
 % Identify the population size (Nind)
    [Nind,ans] = size(FitnV);
+   
+% Apply sigma scaling
+    c=2;
+    meanF = mean(FitnV);
+    stdF = std(FitnV);
+    FitnV(1:Nind) = max(FitnV(1:Nind)-(meanF-c*stdF),0);
 
 % Perform fitness proportionate selection
     expected_count = FitnV/mean(FitnV); 

@@ -59,7 +59,14 @@ function run_ga_path_repr(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR
             %stopping criterion
             if (sObjV(stopN)-sObjV(1) <= 1e-15)
                   break;
-            end          
+            end
+            
+            %%added stop criterium
+            if (stop_crit(gen, best, 20, 0.01))
+                disp("stop_crit")
+                  %break;
+            end 
+            
         	%assign fitness values to entire population
         	FitnV=ranking(ObjV);
         	%select individuals for breeding

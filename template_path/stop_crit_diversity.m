@@ -1,4 +1,6 @@
-function stop = stop_crit_diversity(chrom)
+function unique_pairs = stop_crit_diversity(chrom)
+% Calculates the amount of unique pairs in all the individuals of a
+% generation
     [m,n] = size(chrom);
     edges = zeros(m*n, 2);
     for c=1:m
@@ -16,5 +18,5 @@ function stop = stop_crit_diversity(chrom)
     end
     u = unique(edges, 'rows');
    [s,a] = size(u);
-    stop = s;
+    unique_pairs = s;
 end

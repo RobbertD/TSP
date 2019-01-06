@@ -9,7 +9,7 @@ all_best_fit = zeros(Nruns,Ngen);
 
 for i=1:Nruns
     i
-    [mean_fit, best_fit] = run_ga_test_parentselect(parentSelectionMethod, 179, Ngen, 0.00, 0.95, 0.95, 0.3, 'scx', 0);
+    [mean_fit, best_fit] = run_ga_test_parentselect(parentSelectionMethod, 179, Ngen, 0.0, 0.95, 0.95, 0.3, 'scx', 0);
     all_best_fit(i,:) = best_fit;
     all_mean_fit(i,:) = mean_fit;
 end

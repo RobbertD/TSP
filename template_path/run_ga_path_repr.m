@@ -63,7 +63,7 @@ function run_ga_path_repr(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR
         	%assign fitness values to entire population, by ranking
         	FitnV=ranking(ObjV);
         	%select individuals for breeding
-        	SelCh=select('sus', Chrom, FitnV, GGAP);
+        	SelCh=select('fpropselect', Chrom, FitnV, GGAP);
         	%recombine individuals (crossover)
             if strcmp(CROSSOVER,'scx')
                 SelCh = scx(SelCh, PR_CROSS, Dist);

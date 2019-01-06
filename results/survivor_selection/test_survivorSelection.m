@@ -2,7 +2,7 @@ function test_survivorSelection()
 %function to test the parent selection method
 Nruns = 50;
 Ngen = 28;
-survivorSelectionMethod = 'uniform'
+survivorSelectionMethod = 'fitness-based'
 parentSelectionMethod = 'sus'
 all_mean_fit = zeros(Nruns,Ngen);
 all_best_fit = zeros(Nruns,Ngen);
@@ -10,7 +10,7 @@ all_best_fit = zeros(Nruns,Ngen);
 
 for i=1:Nruns
     i
-    [mean_fit, best_fit] = run_ga_test_survivorselect(survivorSelectionMethod,  parentSelectionMethod, 179, Ngen, 0.00, 0.95, 0.95, 0.3, 'scx', 0);
+    [mean_fit, best_fit] = run_ga_test_survivorselect(survivorSelectionMethod,  parentSelectionMethod, 179, Ngen, 0.05, 0.95, 0.95, 0.3, 'scx', 0);
     all_best_fit(i,:) = best_fit;
     all_mean_fit(i,:) = mean_fit;
 end

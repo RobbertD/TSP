@@ -4,8 +4,8 @@ function best = calc_mean_tsp(N)
 %of each runds
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-NIND=50;		% Number of individuals
-MAXGEN=50;		% Maximum no. of generations
+NIND=250;		% Number of individuals
+MAXGEN=500;		% Maximum no. of generations
 NVAR=26;		% No. of variables
 PRECI=1;		% Precision of variables
 ELITIST=0.05;    % percentage of the elite population

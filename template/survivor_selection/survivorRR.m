@@ -2,7 +2,7 @@ function [SelCh, ObjVSel] = survivorRR(Chrom, SelCh, ObjVCh, ObjVSel)
 %	Implementation of the round robin survivor selection as described in
 %	Introdustion to evolutionary computing
 %   
-q=10;
+q=50;
 chrompool = [Chrom; SelCh];
 objpool = [ObjVCh; ObjVSel];
 Nind = size(chrompool,1);

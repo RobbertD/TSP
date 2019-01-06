@@ -1,6 +1,6 @@
 % FPROPSELECT.M          (FITNESS PROORTIONATE SELECTION)
 %
-% This function performs selection with FITNESS PROORTIONATE SELECTION.
+% This function performs selection with FITNESS PROPORTIONATE SELECTION.
 % Using same format as SUS.M
 % Syntax:  NewChrIx = fpropselect(FitnV, Nsel)
 %
@@ -25,7 +25,7 @@ function NewChrIx = fpropselect(FitnV,Nsel);
     % Whith large populations rounding errors cause fewer of more parents
     % to be selected. Adding 0.1 ensures there are enough parents. Extra
     % parents are truncated later
-    expected_count = expected_count + 0.1;
+    expected_count = expected_count + 0.2;
     rel_expected_count = expected_count*(Nsel/Nind);
     actual_count = round(rel_expected_count);
     
@@ -40,11 +40,11 @@ function NewChrIx = fpropselect(FitnV,Nsel);
     end
 
 % Shuffle new population
-   [ans, shuf] = sort(rand(Nsel, 1));
+   [ans, shuf] = sort(rand(limit, 1));
    NewChrIx_temp = NewChrIx_temp(shuf);
 
 % truncate output to desierd number of chroms
-   NewChrIx(1:Nsel,1) = NewChrIx_temp;
+   NewChrIx(1:Nsel,1) = NewChrIx_temp(1:Nsel,1);
    a = size(NewChrIx_temp)- size(NewChrIx);
    if a>0
        disp(a)
