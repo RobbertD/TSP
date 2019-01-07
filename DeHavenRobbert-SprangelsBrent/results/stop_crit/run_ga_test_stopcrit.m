@@ -1,12 +1,12 @@
-function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, CROSSOVER, LOCALLOOP, ah1, ah2, ah3)
-% usage: run_ga(x, y, 
+function [fit_begin, fit_end, stop_values] = run_ga_test_stopcrit(Ngen, req_impr, NIND, MAXGEN, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR_MUT, CROSSOVER, LOCALLOOP)
+% usage: run_ga(
 %               NIND, MAXGEN, NVAR, 
 %               ELITIST, STOP_PERCENTAGE, 
 %               PR_CROSS, PR_MUT, CROSSOVER, 
 %               ah1, ah2, ah3)
 %
 %
-% x, y: coordinates of the cities
+
 % NIND: number of individuals
 % MAXGEN: maximal number of generations
 % ELITIST: percentage of elite population
@@ -16,9 +16,22 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
 % CROSSOVER: the crossover operator
 % calculate distance matrix between each pair of cities
 % ah1, ah2, ah3: axes handles to visualise tsp
-{NIND MAXGEN NVAR ELITIST STOP_PERCENTAGE PR_CROSS PR_MUT CROSSOVER LOCALLOOP}
+%{NIND MAXGEN ELITIST STOP_PERCENTAGE PR_CROSS PR_MUT CROSSOVER LOCALLOOP}
 
+    % load the data sets
+    datasetslist = dir('template/datasets/');
+    datasets=cell( size(datasetslist,1)-2,1);
+    for i=1:size(datasets,1)
+        datasets{i} = datasetslist(i+2).name;
+    end
 
+    % start with first dataset
+    data = load(['datasets/' datasets{5}]);
+    x=data(:,1)/max([data(:,1);data(:,2)]);
+    y=data(:,2)/max([data(:,1);data(:,2)]);
+    NVAR=size(data,1);
+        
+        stop_values = [];
         GGAP = 1 - ELITIST;
         mean_fits=zeros(1,MAXGEN+1);
         worst=zeros(1,MAXGEN+1);
@@ -32,8 +45,8 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
         % initialize population
         Chrom=zeros(NIND,NVAR);
         for row=1:NIND
-        	Chrom(row,:)=path2adj(randperm(NVAR));
-            %Chrom(row,:)=randperm(NVAR);
+        	%Chrom(row,:)=path2adj(randperm(NVAR));
+            Chrom(row,:)=randperm(NVAR);
         end
         gen=0;
         % number of individuals of equal fitness needed to stop
@@ -48,23 +61,23 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
         	minimum=best(gen+1);
             mean_fits(gen+1)=mean(ObjV);
             worst(gen+1)=max(ObjV);
+            if gen == 0, fit_begin = best(gen+1);  end
             for t=1:size(ObjV,1)
                 if (ObjV(t)==minimum)
                     break;
                 end
             end
-            test1 = Chrom(t,:)
-            test = adj2path(Chrom(t,:))
-            visualizeTSP(x,y,adj2path(Chrom(t,:)), minimum, ah1, gen, best, mean_fits, worst, ah2, ObjV, NIND, ah3);
 
             if (sObjV(stopN)-sObjV(1) <= 1e-15)
                   break;
             end 
             
             %%added stop criterium
-            if (stop_crit(gen, best, 20, 0.01))
+            if (stop_crit(gen, best, Ngen, req_impr))
                 disp("stop_crit")
-                  break;
+                stop_values = [stop_values;[gen, best(gen)]];
+                
+                  %break;
             end 
             diversity(gen+1) = stop_crit_diversity(Chrom);
         	%assign fitness values to entire population
@@ -83,9 +96,5 @@ function run_ga(x, y, NIND, MAXGEN, NVAR, ELITIST, STOP_PERCENTAGE, PR_CROSS, PR
         	%increment generation counter
         	gen=gen+1;            
         end
-%         figure;
-%         plot(diversity);
-%         ylabel('Unique pairs')
-%         xlabel('generations')
-%         title('Unique pairs per generation')
+        fit_end = best(MAXGEN);
 end

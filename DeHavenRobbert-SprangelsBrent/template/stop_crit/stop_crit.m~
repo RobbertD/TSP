@@ -6,9 +6,10 @@ function stop = stop_crit(current_gen, fitnV, x, req_improvement)
 %           untill current generation
 %   X = check stop criterium every x generations
 %   REQ_IMPROVEMENT is a percentage of improved fitness since generation 1
-
-    if (current_gen>x)
-        improvement = (fitnV(current_gen-x) - fitnV(current_gen))/(fitnV(1) - fitnV(current_gen));
+    index = find(fitnV);
+    
+    if (current_gen>x+1)
+        improvement = (fitnV(current_gen-x+1) - fitnV(current_gen))/(fitnV(1) - fitnV(current_gen));
         stop = req_improvement>improvement;
     else
         stop = 0; %FALSE
